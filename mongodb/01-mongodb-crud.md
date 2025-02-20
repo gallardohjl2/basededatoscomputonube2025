@@ -288,3 +288,80 @@ db.libros.find({},{titulo:1})
 ```json
    db.libros.find({editorial:'Planeta'}, {_id:0, titulo:1, editorial:1})
 ```
+
+## Operador exists (Permite saber si un campo se encuentra o no en un documento)
+```json
+db.libros.find({ editorial:{$exists:true}})
+
+db.libros.insertOne(
+  {
+    _id:10,
+    titulo: 'Mongo en entornos gráficos',
+    editorial: 'Terra', 
+    precio:125
+  }
+)
+```
+1. Mostrar todos los documentos que no contengan el campo cantidad
+
+```json
+db.libros.find( { cantidad: { $exists: true }})
+```
+
+## Operador Type (Permite preguntar si un determinado campo corresponde con un tipo)
+
+[Operador Type](https://www.mongodb.com/docs/manual/reference/operator/query/type/#mongodb-query-op.-type)
+
+1. Mostrar todos los documentos donde el precio sean dobles
+
+db.libros.find({precio:{$type:1}})
+db.libros.find({precio:{$type:16}})
+
+db.libros.insertOne({
+  _id:11,
+  titulo:'IA',
+  editorial: 'Terra',
+  precio:125.4,
+  cantidad:20
+})
+
+ db.libros.find({precio:{$type:1}}, {_id:0})
+
+ db.libros.find({precio:{$type:1}}, {_id:0, cantidad:0})
+
+  db.libros.insertMany([
+ {
+    _id: 12,
+    titulo: 'IA',
+    editorial: 'Terra',
+    precio: 125, 
+	cantidad: 20
+  },
+  {
+    _id: 13,
+    titulo: 'Python para todos',
+    editorial: 2001,
+    precio: 200, 
+	cantidad: 30
+  }]
+  )
+
+1. Seleccionar los documentos donde la ediatorial sea de tipo entero
+  db.libros.find({editorial:{$type:16}})
+  db.libros.find({editorial:{$type:'int'}})
+
+2. Seleccionar todos los documentos  donde la editorial sea string
+db.libros.find({editorial:{$type:'string'}})
+db.libros.find({editorial:{$type:2}})
+
+## Practica de Consultas
+1. Instalar las tools de mongodb
+[DatabaseTools](https://www.mongodb.com/try/download/database-tools)
+
+2. Cargar el json empleados (Debemos estar ubicados en la carpeta donde se encuentra el JSON empleados)
+
+- En local:
+  comando:
+    mongoimport --db curso --collection empleados --file empleados.json
+- Docker:
+    mongoimport --db curso --collection empleados --file empleados.json --port 27018
